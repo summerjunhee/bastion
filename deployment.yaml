@@ -13,12 +13,15 @@ spec:
       labels:
         app: muze-web
     spec:
+      serviceAccountName: muze-web-sa
       containers:
-      - name: muze-web
-        image: 620455725858.dkr.ecr.ap-northeast-2.amazonaws.com/muze:v7
-        ports:
-        - containerPort: 8000
-        imagePullPolicy: Always
+        - name: muze-web
+          image: 620455725858.dkr.ecr.ap-northeast-2.amazonaws.com/muze:v9
+          ports:
+            - containerPort: 8000
+          imagePullPolicy: Always
+          envFrom:
+            - secretRef:
+                name: muze-app-secrets
       imagePullSecrets:
-      - name: ecr-secret
-
+        - name: ecr-secret
