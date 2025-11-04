@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: scale-svc
+  namespace: delivery
+spec:
+  type: ClusterIP
+  selector:
+    app: scale-app
+  ports:
+  - port: 80
+    targetPort: 80
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scale-deploy
+  namespace: delivery
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: scale-app
+  template:
+    metadata:
+      labels:
+        app: scale-app
+    spec:
+      containers:
+      - name: scale-pod
+        image: chlzzz/kube-image:hpa
+        resources:
+          limits:
+            memory: 100Mi
+            cpu: 200m
+          requests:
+            memory: 100Mi
+            cpu: 200m
+
